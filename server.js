@@ -1,3 +1,4 @@
+require('dotenv').config();
 const authenticate = require('./middleware/authenticate');
 const sequelize = require('./config/database');
 const Question = require('./models/question');
@@ -18,12 +19,25 @@ app.get('/protected', authenticate(['admin', 'editor']), (req, res) => {
 
 const port = process.env.PORT || 3001;
 
-app.listen(port, () => {
+const server = app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
 });
 
-sequelize.sync({ force: true }).then(() => {
+sequelize.sync().then(() => {
     console.log('Database & tables created!');
 }).catch(err => {
     console.log(err, 'error syncing database');
+});
+
+// Handle graceful shutdown
+process.on('SIGTERM', () => {
+    server.close(() => {
+        console.log('Process terminated');
+    });
+});
+
+process.on('SIGINT', () => {
+    server.close(() => {
+        console.log('Process terminated');
+    });
 });
