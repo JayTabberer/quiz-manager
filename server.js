@@ -7,11 +7,13 @@ const bodyParser = require('body-parser');
 const express = require('express');
 const User = require('./models/user');
 const Quiz = require('./models/quiz');
+const quizRoutes = require('./routes/quiz');
 
 const app = express();
 app.use(bodyParser.json());
 
 app.use('/auth', authRoutes);
+app.use('/quizzes', quizRoutes);
 
 app.get('/protected', authenticate(['admin', 'editor']), (req, res) => {
     res.json({message: 'You are authorized to access this protected route!', user: req.user});
