@@ -2,22 +2,26 @@ const jwt = require('jsonwebtoken');
 
 const authenticate = (roles = []) => {
     return (req, res, next) => {
-        const token = req.headers['authorization'];
-        if (!token) {
-            return res.status(401).json({ error: 'Access denied' });
+        const authHeader = req.headers.authorization;
+        console.log('Authorization Header:', authHeader);
+        if (!authHeader || !authHeader.startsWith('Bearer ')) {
+            return res.status(401).json({ message: 'Unauthorized' });
         }
 
+        const token = authHeader.split(' ')[1];
         try {
-            const verified = jwt.verify(token, process.env.TOKEN_SECRET);
+            const decoded = jwt.verify(token, process.env.TOKEN_SECRET);
+            console.log('Decoded Token:', decoded);
+            req.user = decoded;
 
-            if (roles.length && !roles.includes(verified.role)) {
-                return res.status(401).json({ error: 'Access denied' });
+            if (roles.length && !roles.includes(req.user.role)) {
+                return res.status(403).json({ message: 'Forbidden' });
             }
 
-            req.user = verified;
             next();
         } catch (err) {
-            res.status(400).json({ error: 'Invalid token' });
+            console.error('JWT Verification Error:', err);
+            return res.status(401).json({ message: 'Unauthorized' });
         }
     };
 };
