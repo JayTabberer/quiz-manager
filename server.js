@@ -1,13 +1,14 @@
 require('dotenv').config();
 const authenticate = require('./middleware/authenticate');
 const sequelize = require('./config/database');
-const Question = require('./models/question');
 const authRoutes = require('./routes/auth');
+const quizRoutes = require('./routes/quiz');
 const bodyParser = require('body-parser');
 const express = require('express');
 const User = require('./models/user');
 const Quiz = require('./models/quiz');
-const quizRoutes = require('./routes/quiz');
+const Question = require('./models/question');
+const Answer = require('./models/answer');
 
 const app = express();
 app.use(bodyParser.json());

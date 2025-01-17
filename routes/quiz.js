@@ -1,12 +1,24 @@
 const express = require('express');
-const authenticate = require('../middleware/authenticate');
-const Quiz = require('../models/quiz');
 const router = express.Router();
+const Quiz = require('../models/quiz');
+const Question = require('../models/question');
+const Answer = require('../models/answer');
+const authenticate = require('../middleware/authenticate');
 
 router.post('/', authenticate(['admin', 'editor']), async (req, res) => {
     try {
-        const { title } = req.body;
+        const { title, questions } = req.body;
         const quiz = await Quiz.create({ title });
+        if (questions && questions.length > 0) {
+            for (const question of questions) {
+                const createdQuestion = await Question.create({ text: question.text, quizId: quiz.id });
+                if (question.answers && question.answers.length > 0) {
+                    for (const answer of question.answers) {
+                        await Answer.create({ text: answer.text, is_correct: answer.is_correct, questionId: createdQuestion.id });
+                    }
+                }
+            }
+        }
         res.status(201).json(quiz);
     } catch (err) {
         res.status(500).json({ error: "Error creating quiz", message: err.message });
@@ -22,9 +34,22 @@ router.get('/', authenticate(), async (req, res) => {
     }
 });
 
-router.get('/:id', authenticate(), async (req, res) => {
+router.get('/:id', authenticate(['admin', 'editor', 'user', 'viewer']), async (req, res) => {
     try {
-        const quiz = await Quiz.findByPk(req.params.id);
+        const quiz = await Quiz.findByPk(req.params.id, {
+            include: [
+                {
+                    model: Question,
+                    as: 'questions',
+                    include: [
+                        {
+                            model: Answer,
+                            as: 'answers',
+                        },
+                    ],
+                },
+            ],
+        });
         if (!quiz) {
             return res.status(404).json({ error: "Quiz not found" });
         }
@@ -36,16 +61,26 @@ router.get('/:id', authenticate(), async (req, res) => {
 
 router.put('/:id', authenticate(['admin', 'editor']), async (req, res) => {
     try {
-        const { title } = req.body;
+        const { title, questions } = req.body;
         const quiz = await Quiz.findByPk(req.params.id);
 
         if (!quiz) {
             return res.status(404).json({ error: "Quiz not found" });
-        } else {
-            quiz.title = title;
-            await quiz.save();
-            res.json(quiz);
+        } 
+        await quiz.update({ title });
+        if (questions && questions.length > 0) {
+            await Question.destroy({ where: { quizId: quiz.id } });
+            for (const question of questions) {
+                const createdQuestion = await Question.create({ text: question.text, quizId: quiz.id });
+                if (question.answers && question.answers.length > 0) {
+                    for (const answer of question.answers) {
+                        await Answer.create({ text: answer.text, is_correct: answer.is_correct, questionId: createdQuestion.id });
+                }
+            }
+            
         }
+    } 
+    res.status(201).json(quiz);
     } catch (err) {
         res.status(500).json({ error: "Error updating quiz", message: err.message });
     }
@@ -57,6 +92,7 @@ router.delete('/:id', authenticate(['admin', 'editor']), async (req, res) => {
         if (!quiz) {
             return res.status(404).json({ error: "Quiz not found" });
         }
+        await Question.destroy({ where: { quizId: quiz.id } });
         await quiz.destroy();
         res.json({ message: "Quiz deleted" });
     } catch (err) {
