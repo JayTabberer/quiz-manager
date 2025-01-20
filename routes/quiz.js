@@ -29,7 +29,20 @@ router.post('/', authenticate(['admin', 'editor']), async (req, res) => {
 // Get all quizzes
 router.get('/', authenticate(), async (req, res) => {
     try {
-        const quizzes = await Quiz.findAll();
+        const quizzes = await Quiz.findAll({
+            include: [
+                {
+                    model: Question,
+                    as: 'questions',
+                    include: [
+                        {
+                            model: Answer,
+                            as: 'answers',
+                        },
+                    ],
+                },
+            ],
+        });
         res.json(quizzes);
     } catch (err) {
         res.status(500).json({ error: "Error getting quizzes", message: err.message });
