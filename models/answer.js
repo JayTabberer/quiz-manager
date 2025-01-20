@@ -13,7 +13,7 @@ const Answer = sequelize.define('Answer', {
     },
     is_correct: {
         type: DataTypes.BOOLEAN,
-        defaultValue: false,
+        allowNull: false,
     },
     questionId: {
         type: DataTypes.INTEGER,

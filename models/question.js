@@ -11,14 +11,6 @@ const Question = sequelize.define('Question', {
         type: DataTypes.STRING,
         allowNull: false,
     },
-    // quizId: {
-    //     type: DataTypes.INTEGER,
-    //     references: {
-    //         model: 'Quizzes',
-    //         key: 'id',
-    //     },
-    //     onDelete: 'CASCADE',
-    // },
 });
 
 module.exports = Question;
