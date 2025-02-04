@@ -1,6 +1,6 @@
 import Axios from 'axios';
 
-const API_URL = 'http://localhost:3001';
+const API_URL = 'http://localhost:3001/api';
 
 export const getQuizzes = async () => {
     const response = await Axios.get(`${API_URL}/quizzes`);
