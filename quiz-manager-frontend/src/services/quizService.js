@@ -1,6 +1,11 @@
 import Axios from 'axios';
 
-const API_URL = 'http://localhost:3001/api';
+const API_URL = 'http://localhost:3001';
+
+export const registerUser = async (user) => {
+    const response = await Axios.post(`${API_URL}/users`, user);
+    return response.data;
+};
 
 export const getQuizzes = async () => {
     const response = await Axios.get(`${API_URL}/quizzes`);
@@ -26,3 +31,5 @@ export const deleteQuiz = async (id) => {
     const response = await Axios.delete(`${API_URL}/quizzes/${id}`);
     return response.data;
 };
+
+export default { registerUser, getQuizzes, getQuizById, createQuiz, updateQuiz, deleteQuiz };

@@ -1,8 +1,10 @@
 <template>
   <div id="app">
     <nav>
-      <router-link to="/">HomePage</router-link>
-      <router-link to="/quizzes">Quizzes 123</router-link>
+      <router-link to="/">Create User</router-link>
+      <router-link to="/login-page">Login</router-link>
+      <router-link to="/home-page">HomePage</router-link>
+      <router-link to="/quizzes">Quizzes</router-link>
       <router-link to="/create-quiz">Create Quiz</router-link>
     </nav>
     <router-view></router-view>

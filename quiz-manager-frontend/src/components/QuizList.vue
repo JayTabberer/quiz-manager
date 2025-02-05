@@ -6,7 +6,8 @@
                 <router-link :to="{ name: 'QuizDetail', params: { id: quiz.id } }">{{ quiz.title }}</router-link>
             </li>
         </ul>
-        <router-link to="/create-quiz">Create New Quiz</router-link>
+        
+        <h1>A list of quizes shold live here</h1>
     </div>
 </template>
 

@@ -3,6 +3,8 @@ import Router from 'vue-router';
 import HomePage from '@/components/HomePage.vue';
 import QuizList from '@/components/QuizList.vue';
 import QuizForm from '@/components/QuizForm.vue';
+import CreateUser from '@/components/CreateUser.vue';
+import LoginPage from '@/components/LoginPage.vue';
 
 Vue.use(Router);
 
@@ -11,6 +13,16 @@ export default new Router({
     routes: [
         {
             path: '/',
+            name: 'CreateUser',
+            component: CreateUser,
+        },
+        {
+            path: '/login-page',
+            name: 'LoginPage',
+            component: LoginPage,
+        },
+        {
+            path: '/home-page',
             name: 'HomePage',
             component: HomePage,
         },

@@ -1,22 +1,22 @@
 <template>
     <div>
         <h1>Create Quiz</h1>
-        <form @submit.prevent="submitForm">
-            <div>
+        <form @submit.prevent="submitForm" class="form-block">
+            <div style="background-color: white;">
                 <label for="title">Title:</label>
                 <input type="text" v-model="title" required />
             </div>
-            <div v-for="(question, index) in questions" :key="index">
+            <form style="background-color: white;" v-for="(question, index) in questions" :key="index">
                 <label for="question">Question:</label>
                 <input type="text" v-model="question.text" required />
-                <div v-for="(answer, idx) in question.answers" :key="idx">
+                <form style="background-color: white;" v-for="(answer, idx) in question.answers" :key="idx">
                     <label for="answer">Answer:</label>
                     <input type="text" v-model="answer.text" required />
                     <label for="is_correct">Correct:</label>
                     <input type="checkbox" v-model="answer.is_correct" />
-                </div>
-                <button type="button" @click="addAnswer(index)">Add Answer</button>
-            </div>
+                </form>
+            </form>
+            <button type="button" @click="addAnswer(index)">Add Answer</button>
             <button type="button" @click="addQuestion">Add Question</button>
             <button type="submit">Create Quiz</button>
         </form>
@@ -63,3 +63,40 @@ export default {
     },
 };
 </script>
+
+<style>
+
+    .form-block {
+        justify-content: center;
+        width: 50%;
+        margin: 0 auto;
+        padding: 20px;
+        background-color: white;
+        margin-top: 50px;
+    }
+
+    label {
+        width: 45%;
+        display: inline-block;
+        margin-top: 10px;
+        background-color: white;
+    }
+
+    input {
+        width: 45%;
+        padding: 5px;
+        margin-top: 5px;
+        background-color: white;
+    }
+
+    button {
+        margin-top: 10px;
+        padding: 5px;
+        background-color: orange;
+        color: white;
+        justify-content: space-around;
+    }
+
+    button:hover {
+        background-color: #2c7a6b;
+    }

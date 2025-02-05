@@ -1,8 +1,8 @@
 <template>
     <div>
         <h1>Welcome to Quiz Manager</h1>
-        <router-link to="/quizzes">View Quizzes</router-link>
-        <router-link to="/create-quiz">Create Quiz</router-link>
+        
+        <p>Quiz Manager is a web application that allows you to create quizzes and take quizzes.</p>
     </div>
 </template>
 
