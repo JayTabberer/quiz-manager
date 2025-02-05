@@ -8,8 +8,13 @@ export const registerUser = async (user) => {
 };
 
 export const getQuizzes = async () => {
-    const response = await Axios.get(`${API_URL}/quizzes`);
-    return response.data;
+    try {
+        const response = await Axios.get(`${API_URL}/quizzes`);
+        return response.data;
+    } catch (error) {
+        console.error('Error fetching quizzes:', error);
+        return []; // Return an empty array to prevent Vue errors
+    }
 };
 
 export const getQuizById = async (id) => {
