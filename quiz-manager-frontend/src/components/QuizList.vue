@@ -43,6 +43,7 @@
 import { getQuizzes } from '@/services/quizService';
 
 export default {
+    name: 'QuizList',
     data() {
         return {
             quizzes: [],
@@ -60,11 +61,9 @@ export default {
     methods: {
         editQuiz(id) {
             console.log(`Edit quiz with ID: ${id}`);
-            // Navigate to edit page (to be implemented)
         },
         deleteQuiz(id) {
             console.log(`Delete quiz with ID: ${id}`);
-            // Call delete API (to be implemented)
         },
     }
 };
