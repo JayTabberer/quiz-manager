@@ -45,4 +45,14 @@ export const deleteQuiz = async (id) => {
     return response.data;
 };
 
+export const submitQuiz = async (quizId, selectedAnswers) => {
+    try {
+        const response = await Axios.post(`${API_URL}/quizzes/${quizId}/submit`, { answers: selectedAnswers });
+        return response.data;
+    } catch (error) {
+        console.error('Error submitting quiz:', error);
+        throw error;
+    }
+};
+
 export default { registerUser, getQuizzes, getQuizById, createQuiz, updateQuiz, deleteQuiz };

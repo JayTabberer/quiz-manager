@@ -32,8 +32,6 @@
 
 <style>
 
-
-
     .form-block {
         justify-content: center;
         width: 50%;

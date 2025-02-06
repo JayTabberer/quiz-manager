@@ -45,12 +45,6 @@ export default {
 
 <style>
 
-    * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-        background: rgb(32, 31, 44);
-    }
     .form-block {
         justify-content: center;
         width: 50%;
