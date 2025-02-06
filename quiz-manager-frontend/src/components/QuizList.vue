@@ -40,7 +40,7 @@
 </template>
 
 <script>
-import { getQuizzes } from '@/services/quizService';
+import { getQuizzes, deleteQuiz } from '@/services/quizService';
 
 export default {
     name: 'QuizList',
@@ -60,10 +60,18 @@ export default {
     },
     methods: {
         editQuiz(id) {
-            console.log(`Edit quiz with ID: ${id}`);
+            this.$router.push({ name: 'EditQuiz', params: { id } });
         },
-        deleteQuiz(id) {
-            console.log(`Delete quiz with ID: ${id}`);
+        async deleteQuiz(id) {
+            if (!confirm("Are you sure you want to delete this quiz?")) return;
+            
+            try {
+                await deleteQuiz(id);
+                this.quizzes = this.quizzes.filter(quiz => quiz.id !== id);
+                // maybe add some notification here to let the user know this has been deleted successfully
+            } catch (error) {
+                console.error("Error deleting quiz:", error);
+            }
         },
     }
 };
