@@ -5,6 +5,7 @@ import QuizList from '@/components/QuizList.vue';
 import QuizForm from '@/components/QuizForm.vue';
 import CreateUser from '@/components/CreateUser.vue';
 import LoginPage from '@/components/LoginPage.vue';
+import QuizDetail from '@/components/QuizDetail.vue';
 
 Vue.use(Router);
 
@@ -30,6 +31,11 @@ export default new Router({
             path: '/quizzes',
             name: 'QuizList',
             component: QuizList,
+        },
+        {
+            path: '/quiz-detail/:id',
+            name: 'QuizDetail',
+            component: QuizDetail,
         },
         {
             path: '/create-quiz',

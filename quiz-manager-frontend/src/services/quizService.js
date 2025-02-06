@@ -18,8 +18,16 @@ export const getQuizzes = async () => {
 };
 
 export const getQuizById = async (id) => {
-    const response = await Axios.get(`${API_URL}/quizzes/${id}`);
-    return response.data;
+    try {
+        const response = await Axios.get(`${API_URL}/quizzes/${id}`);
+        console.log('herroooo data', response.data);
+        
+        return response.data;
+    } catch (error) {
+        console.error('Error fetching a quiz:', error);
+        return []; // Return an empty array to prevent Vue errors
+    }
+
 };
 
 export const createQuiz = async (quiz) => { 
