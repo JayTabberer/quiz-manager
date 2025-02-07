@@ -2,8 +2,8 @@
     <div class="max-w-3xl mx-auto mt-10">
         <h1 class="text-2xl font-bold mb-4 quiz-title">{{ quiz.title }}</h1>
 
-        <form class="test-class" @submit.prevent="submitQuiz">
-            <div v-for="(question, index) in quiz.questions" :key="question.id" class="mb-6 testy-one">
+        <form class="form-container form-margin mb-5" @submit.prevent="submitQuiz">
+            <div v-for="(question, index) in quiz.questions" :key="question.id" class="mb-6">
                 <h2 class="font-semibold quiz-question-title">{{ index + 1 }}. {{ question.text }}</h2>
 
                 <div class="form-background" v-for="answer in question.answers" :key="answer.id">
@@ -20,7 +20,7 @@
             </div>
 
             <button type="submit" class="mt-4 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
-                Submit Quiz
+                Get results
             </button>
 
             <div v-if="score !== null" class="mt-4 p-4 bg-green-100 rounded">
@@ -77,17 +77,13 @@ export default {
         text-align: center;
     }
 
-    .testy-one {
-        background-color: aquamarine;
-    }
-
     .quiz-question-title {
         text-align: center;
         background-color: #f5f5f5;
         padding: 10px;
     }
 
-    .test-class {
+    .form-container {
         width: 45%;
         display: inline-block;
     }
@@ -106,6 +102,10 @@ export default {
         align-items: center;  /* Ensures everything is vertically aligned */
         padding: 10px;
         width: 100%;
+    }
+
+    .form-margin {
+        margin-bottom: 5%;
     }
 
     label {

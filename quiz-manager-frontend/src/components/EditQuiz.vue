@@ -45,9 +45,8 @@ export default {
         const quizId = this.$route.params.id;
         try {
             const data = await getQuizById(quizId);
-            console.log("Fetched quiz data:", data); // Debugging
 
-            // Ensure Vue tracks reactivity
+            // make it readable
             this.quiz = JSON.parse(JSON.stringify(data));
 
             // Convert correct answer into an index
@@ -76,8 +75,6 @@ export default {
                         answer.is_correct = index === question.correctAnswer;
                     });
                 });
-
-                console.log("Submitting quiz data:", this.quiz); 
 
                 await updateQuiz(this.quiz);
                 this.$router.push({ name: 'QuizList' });

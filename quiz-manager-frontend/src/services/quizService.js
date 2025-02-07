@@ -20,7 +20,6 @@ export const getQuizzes = async () => {
 export const getQuizById = async (id) => {
     try {
         const response = await Axios.get(`${API_URL}/quizzes/${id}`);
-        console.log('herroooo data', response.data);
         
         return response.data;
     } catch (error) {

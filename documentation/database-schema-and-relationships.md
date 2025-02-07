@@ -33,7 +33,7 @@
 |            | updatedAt   | TIMESTAMP   | Timestamp of when the answer was last updated    |
 
 
-### Summary of Role Permissions
+### Summary of Role Permissions / Use case diagram for roles and permissions
 
 | Action          | Admin | Editor | User | Viewer |
 |-----------------|-------|--------|------|--------|
@@ -41,6 +41,4 @@
 | Update Quizzes  | Yes   | Yes    | No   | No     |
 | Delete Quizzes  | Yes   | Yes    | No   | No     |
 | View Quizzes    | Yes   | Yes    | Yes  | Yes    |
-
-
 
