@@ -51,7 +51,7 @@ export default {
             try {
                 const quizId = this.$route.params.id;
                 this.quiz = await getQuizById(quizId);
-                console.log('Fetched quiz:', this.quiz);
+                
             } catch (error) {
                 console.error('Error fetching quiz:', error);
             }
