@@ -108,7 +108,6 @@ export default {
         width: 100%;
     }
 
-    /* 🛠️ Ensures radio button and text stay on the same line */
     label {
         display: flex;
         align-items: center;
@@ -132,7 +131,6 @@ export default {
         transition: background 0.3s;
     }
 
-    /* ✅ When selected, background turns red */
     input[type="radio"]:checked {
         background-color: darkblue;
     }

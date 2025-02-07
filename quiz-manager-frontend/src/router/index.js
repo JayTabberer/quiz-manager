@@ -6,6 +6,7 @@ import QuizForm from '@/components/QuizForm.vue';
 import CreateUser from '@/components/CreateUser.vue';
 import LoginPage from '@/components/LoginPage.vue';
 import QuizDetail from '@/components/QuizDetail.vue';
+import EditQuiz from '@/components/EditQuiz.vue';
 
 Vue.use(Router);
 
@@ -41,6 +42,11 @@ export default new Router({
             path: '/create-quiz',
             name: 'QuizForm',
             component: QuizForm,
+        },
+        {
+            path: '/edit-quiz',
+            name: 'EditQuiz',
+            component: EditQuiz,
         },
     ],
 });
