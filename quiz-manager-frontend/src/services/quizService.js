@@ -3,8 +3,24 @@ import Axios from 'axios';
 const API_URL = 'http://localhost:3001';
 
 export const registerUser = async (user) => {
-    const response = await Axios.post(`${API_URL}/users`, user);
-    return response.data;
+    try {
+        const response = await Axios.post(`${API_URL}/auth/register`, user);
+
+        return response.data;
+    } catch (error) {
+        console.error('Error registering user:', error.response?.data?.error || error.message);
+        throw error;
+    }
+};
+
+export const loginUser = async (credentials) => {
+    try {
+        const response = await Axios.post(`${API_URL}/auth/login`, credentials);
+        return response.data;
+    } catch (error) {
+        console.error('Error logging in:', error.response?.data?.error || error.message);
+        throw error;
+    }
 };
 
 export const getQuizzes = async () => {
@@ -54,4 +70,4 @@ export const submitQuiz = async (quizId, selectedAnswers) => {
     }
 };
 
-export default { registerUser, getQuizzes, getQuizById, createQuiz, updateQuiz, deleteQuiz };
+export default { registerUser, getQuizzes, getQuizById, createQuiz, updateQuiz, deleteQuiz, loginUser};

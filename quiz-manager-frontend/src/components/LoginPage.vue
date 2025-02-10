@@ -1,66 +1,47 @@
 <template>
     <div>
         <h1>Login</h1>
-        <form class="form-block" @submit.prevent="login">
+        <form @submit.prevent="loginUser" class="form-block">
             <label for="username">Username</label>
-            <input type="text" id="username" v-model="username">
-            <label type="text" required> Role</label>
-            <input type="text" id="role" value="admin" v-model="role" required>
+            <input type="text" id="username" v-model="username" required>
+
             <label for="password">Password</label>
-            <input type="password" id="password" v-model="password">
-            <div style="background-color: white;">
-                <button type="submit">Login</button>
-            </div>
+            <input type="password" id="password" v-model="password" required>
+
+            <button type="submit">Login</button>
         </form>
     </div>
 </template>
 
 <script>
- export default {
-    name: 'LoginPage',
+import quizService from '../services/quizService';
 
+export default {
+    name: 'LoginPage',
     data() {
         return {
             username: '',
-            role: 'admin',
             password: ''
         };
     },
- }
+    methods: {
+        async loginUser() {
+            try {
+                const response = await quizService.loginUser({
+                    username: this.username,
+                    password: this.password
+                });
 
+                localStorage.setItem('token', response.token);
+                localStorage.setItem('user', JSON.stringify(response.user));
+
+                alert('Login successful!');
+
+                this.$router.push({ name: 'HomePage' });
+            } catch (error) {
+                console.error('Login failed:', error.response?.data?.message || error.message);
+            }
+        }
+    }
+};
 </script>
-
-<style>
-
-    .form-block {
-        justify-content: center;
-        width: 50%;
-        margin: 0 auto;
-        padding: 20px;
-        background-color: white;
-        margin-top: 50px;
-    }
-
-    label {
-        width: 45%;
-        display: inline-block;
-        margin-top: 10px;
-        background-color: white;
-    }
-
-    input {
-        width: 45%;
-        padding: 5px;
-        margin-top: 5px;
-        background-color: white;
-    }
-
-    button {
-        margin-top: 10px;
-        padding: 5px;
-        background-color: orange;
-        color: white;
-    }
-
-
-</style>

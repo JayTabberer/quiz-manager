@@ -41,7 +41,7 @@ export default new Router({
         {
             path: '/create-quiz',
             name: 'QuizForm',
-            component: QuizForm,
+            component: QuizForm, 
         },
         {
             path: '/edit-quiz',

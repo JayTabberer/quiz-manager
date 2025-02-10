@@ -4,10 +4,18 @@
         <form @submit.prevent="createUser" class="form-block">
             <label for="username">Username</label>
             <input type="text" id="username" v-model="username" required>
-            <label type="text" required> Role</label>
-            <input type="text" id="role" value="admin" v-model="role" required>
+
+            <label for="role">Role</label>
+            <select id="role" v-model="role" required>
+                <option value="admin">Admin</option>
+                <option value="editor">Editor</option>
+                <option value="user">User</option>
+                <option value="viewer">Viewer</option>
+            </select>
+
             <label for="password">Password</label>
             <input type="password" id="password" v-model="password" required>
+
             <button type="submit">Create User</button>
         </form>
     </div>
@@ -18,29 +26,30 @@ import quizService from '../services/quizService';
 
 export default {
     name: 'CreateUser',
-
     data() {
         return {
             username: '',
-            role: 'admin',
+            role: 'user',
             password: ''
         };
     },
-
     methods: {
         async createUser() {
-            const user = {
-                username: this.username,
-                role: this.role,
-                password: this.password
-            };
-            await quizService.registerUser(user);
-            this.$router.push({ name: 'UserList' });
+            try {
+                const user = {
+                    username: this.username,
+                    role: this.role,
+                    password: this.password
+                };
+
+                await quizService.registerUser(user);
+                this.$router.push({ name: 'LoginPage' });
+            } catch (error) {
+                console.error('Error creating user:', error.response?.data?.error || error.message);
+            }
         }
-        
     },
 };
-
 </script>
 
 <style>
