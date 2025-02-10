@@ -1,173 +1,205 @@
 <template>
     <div class="max-w-3xl mx-auto mt-10">
-        <h1 class="text-2xl font-bold mb-4 quiz-title">{{ quiz.title }}</h1>
+      <h1 class="text-2xl font-bold mb-4 quiz-title">{{ quiz.title }}</h1>
 
-        <form class="form-container form-margin mb-5" @submit.prevent="submitQuiz">
-            <div v-for="(question, index) in quiz.questions" :key="question.id" class="mb-6">
-                <h2 class="font-semibold quiz-question-title">{{ index + 1 }}. {{ question.text }}</h2>
+      <div v-if="score !== null" class="mt-4 p-4 bg-green-100 rounded">
+          <h2 class="text-lg font-bold w-50">Your Score: {{ score }} / {{ totalQuestions }}</h2>
+        </div>
+  
+      <form class="form-container form-margin mb-5" @submit.prevent="submitQuiz">
+        <div v-for="(question, index) in quiz.questions" :key="question.id" class="mb-6 question-container">
+          <h2 class="font-semibold quiz-question-title">{{ index + 1 }}. {{ question.text }}</h2>
+  
+          <div class="form-background" v-for="answer in question.answers" :key="answer.id">
+            <label class="flex items-center space-x-2">
+              <input
+                type="radio"
+                :name="'question-' + question.id"
+                :value="answer.id"
+                v-model="selectedAnswers[question.id]"
+              />
+              <span>{{ answer.text }}</span>
+            </label>
+          </div>
+        </div>
+  
+        <button type="submit" class="get-results-button">
+          Get results
+        </button>
 
-                <div class="form-background" v-for="answer in question.answers" :key="answer.id">
-                    <label class="flex items-center space-x-2">
-                        <input
-                            type="radio"
-                            :name="'question-' + question.id"
-                            :value="answer.id"
-                            v-model="selectedAnswers[question.id]"
-                        />
-                    </label>
-                    <span style="margin-left: 10%;">{{ answer.text }}</span>
-                </div>
-            </div>
-
-            <button type="submit" class="get-results-button">
-                Get results
-            </button>
-
-            <div v-if="score !== null" class="mt-4 p-4 bg-green-100 rounded">
-                <h2 class="text-lg font-bold">Your Score: {{ score }} / {{ totalQuestions }}</h2>
-            </div>
-        </form>
+      </form>
     </div>
-</template>
-
-<script>
-import { getQuizById, submitQuiz } from '@/services/quizService';
-
-export default {
+  </template>
+  
+  <script>
+  import { getQuizById, submitQuiz } from '@/services/quizService';
+  
+  export default {
     name: 'QuizDetail',
     data() {
-        return {
-            quiz: { title: '', questions: [] },
-            selectedAnswers: {},
-            score: null,
-            totalQuestions: null,
-        };
+      return {
+        quiz: { title: '', questions: [] },
+        selectedAnswers: {},
+        score: null,
+        totalQuestions: null,
+      };
     },
     mounted() {
-        this.getTheQuiz();
+      this.getTheQuiz();
     },
     methods: {
-        async getTheQuiz() {
-            try {
-                const quizId = this.$route.params.id;
-                this.quiz = await getQuizById(quizId);
-                
-            } catch (error) {
-                console.error('Error fetching quiz:', error);
-            }
-        },
-        async submitQuiz() {
-            try {
-                const quizId = this.$route.params.id;
-                const result = await submitQuiz(quizId, this.selectedAnswers);
-                this.score = result.score;
-                this.totalQuestions = result.totalQuestions;
-                console.log('Quiz submitted:', result);
-            } catch (error) {
-                console.error('Error submitting quiz:', error);
-            }
-        },
+      async getTheQuiz() {
+        try {
+          const quizId = this.$route.params.id;
+          this.quiz = await getQuizById(quizId);
+        } catch (error) {
+          console.error('Error fetching quiz:', error);
+        }
+      },
+      async submitQuiz() {
+        try {
+          const quizId = this.$route.params.id;
+          const result = await submitQuiz(quizId, this.selectedAnswers);
+          this.score = result.score;
+          this.totalQuestions = result.totalQuestions;
+          console.log('Quiz submitted:', result);
+        } catch (error) {
+          console.error('Error submitting quiz:', error);
+        }
+      },
     },
-};
-</script>
-
-<style scoped>
-
-    .quiz-title {
-        text-align: center;
-    }
-
-    .quiz-question-title {
-        text-align: center;
-        background-color: #f5f5f5;
-        padding: 10px;
-    }
-
-    .form-container {
-        width: 45%;
-        display: inline-block;
-    }
-
-    form {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        background-color: #f5f5f5;
-        padding: 20px;
-    }
-
-    .form-background {
-        background-color: floralwhite;
-        display: flex;
-        align-items: center;  /* Ensures everything is vertically aligned */
-        padding: 10px;
-        width: 100%;
-    }
-
-    .form-margin {
-        margin-bottom: 5%;
-    }
-
-    .get-results-button {
-        width: 30%;
-    }
-
-    .get-results-button:hover {
-        width: 30%;
-        background-color: rgb(39, 176, 39);
-    }
-
-    label {
-        display: flex;
-        align-items: center;
-        width: 20%;
-        cursor: pointer;
-        background-color: floralwhite;
-    }
-
-    /* ✅ Radio button styles */
-    input[type="radio"] {
-        appearance: none; /* Removes default styles */
-        width: 20px;
-        height: 20px;
-        border: 2px solid black;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        cursor: pointer;
-        margin-right: 10px;
-        background-color: white;
-        transition: background 0.3s;
-    }
-
-    input[type="radio"]:checked {
-        background-color: darkblue;
-    }
-
-    /* ✅ Make answer text align properly */
-    span {
-        flex: 1; /* Makes sure text expands evenly */
-        cursor: pointer;
-        background-color: floralwhite;
-        color: black;
-    }
-
-    button {
-        cursor: pointer;
-        padding: 10px 20px;
-        font-size: 16px;
-        background-color: orange;
-        color: white;
-        border-radius: 5px;
-        transition: all 0.2s;
-    }
-
-    button:hover {
-        filter: brightness(0.9);
-    }
-
-    button:active {
-        filter: brightness(0.8);
-    }
-
-</style>
+  };
+  </script>
+  
+  <style scoped>
+  /* Title */
+  .quiz-title {
+    text-align: center;
+  }
+  
+  /* Question Titles */
+  .quiz-question-title {
+    text-align: center;
+    background-color: lightsteelblue;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 6px;
+    font-size: 1.1em;
+  }
+  
+  /* Question Container */
+  .question-container {
+    padding: 10px;
+    background-color: #fafafa;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+  }
+  
+  /* Form Background */
+  .form-background {
+    background-color: floralwhite;
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    width: 100%;
+    border-radius: 6px;
+    margin-bottom: 5px;
+  }
+  
+  .form-background:hover {
+    background-color: #f9f9f9;
+  }
+  
+  /* Form Layout */
+  .form-container {
+    width: 45%;
+    display: inline-block;
+    background-color: #f5f5f5;
+    padding: 20px;
+    border-radius: 10px;
+  }
+  
+  form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  /* Label Styling */
+  label {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    cursor: pointer;
+  }
+  
+  input[type="radio"] {
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    border: 2px solid black;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    margin-right: 10px;
+    background-color: white;
+    transition: background 0.3s;
+  }
+  
+  input[type="radio"]:checked {
+    background-color: orangered;
+  }
+  
+  /* Button Styling */
+  .get-results-button {
+    width: 30%;
+    padding: 10px;
+    font-size: 16px;
+    background-color: orange;
+    color: white;
+    border-radius: 5px;
+    transition: all 0.2s;
+    margin-top: 20px;
+  }
+  
+  .get-results-button:hover {
+    filter: brightness(0.9);
+  }
+  
+  .get-results-button:active {
+    filter: brightness(0.8);
+  }
+  
+  /* Result Section */
+  .mt-4 {
+    margin-top: 20px;
+  }
+  
+  .bg-green-100 {
+    background-color: #d4edda;
+  }
+  
+  .rounded {
+    border-radius: 5px;
+  }
+  
+  /* Answer Text */
+  span {
+    flex: 1;
+    cursor: pointer;
+    background-color: white;
+    color: black;
+  }
+  
+  /* General Spacing */
+  .mb-6 {
+    margin-bottom: 20px;
+  }
+  
+  /* Margin for form container */
+  .form-margin {
+    margin-bottom: 5%;
+  }
+  </style>
+  
