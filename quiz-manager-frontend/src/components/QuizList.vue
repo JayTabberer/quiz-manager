@@ -2,6 +2,15 @@
     <div class="max-w-3xl mx-auto mt-10">
         <h1 class="text-2xl font-bold mb-6">Quizzes</h1>
 
+        <!-- Create Quiz Button (Only for Admin & Editors) -->
+        <button
+            v-if="userRole === 'admin' || userRole === 'editor'"
+            @click="goToCreateQuiz"
+            class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 mb-4"
+        >
+            Create Quiz
+        </button>
+
         <table class="w-full">
             <thead class="bg-gray-100">
                 <tr>
@@ -21,12 +30,14 @@
                     </td>
                     <td class="p-3 text-center space-x-2">
                         <button
+                            v-if="userRole === 'admin' || userRole === 'editor'"
                             @click="editQuiz(quiz.id)"
                             class="bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600"
                         >
                             Edit
                         </button>
                         <button
+                            v-if="userRole === 'admin'"
                             @click="deleteQuiz(quiz.id)"
                             class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
                         >
@@ -47,18 +58,27 @@ export default {
     data() {
         return {
             quizzes: [],
+            userRole: null,
         };
     },
     async created() {
         try {
             const data = await getQuizzes();
-            console.log(data);
             this.quizzes = data;
+
+            // Retrieve user role from local storage
+            const user = JSON.parse(localStorage.getItem('user'));
+            if (user && user.role) {
+                this.userRole = user.role;
+            }
         } catch (error) {
             console.error('Failed to load quizzes:', error);
         }
     },
     methods: {
+        goToCreateQuiz() {
+            this.$router.push({ name: 'QuizForm' });
+        },
         editQuiz(id) {
             this.$router.push({ name: 'EditQuiz', params: { id } });
         },
@@ -68,7 +88,7 @@ export default {
             try {
                 await deleteQuiz(id);
                 this.quizzes = this.quizzes.filter(quiz => quiz.id !== id);
-                // maybe add some notification here to let the user know this has been deleted successfully
+                alert("Quiz deleted successfully.");
             } catch (error) {
                 console.error("Error deleting quiz:", error);
             }
@@ -78,58 +98,44 @@ export default {
 </script>
 
 <style scoped>
-
-    table {
-        width: 60%;
-        background-color: white;
-        margin-left: 20%;
-    }
-
-    th, td {
-        padding: 0.75rem;
-        background-color: whitesmoke;
-    }
-
-    th {
-        background-color: white;
-    }
-
-    tr:nth-child(even) {
-        background-color: #f9f9f9;
-    }
-
-    tr:hover {
-        background-color: #f3f3f3;
-    }
-
-    button {
-        cursor: pointer;
-    }
-
-    button:hover {
-        filter: brightness(0.9);
-    }
-
-    button:active {
-        filter: brightness(0.8);
-    }
-
-    button:focus {
-        outline: none;
-    }
-
-    a {
-        text-decoration: none;
-        color: black;
-    }
-
-    a:hover {
-        text-decoration: underline;
-    }
-
-    a:focus {
-        outline: none;
-    }
-
-
+table {
+    width: 60%;
+    background-color: white;
+    margin-left: 20%;
+}
+th, td {
+    padding: 0.75rem;
+    background-color: whitesmoke;
+}
+th {
+    background-color: white;
+}
+tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+tr:hover {
+    background-color: #f3f3f3;
+}
+button {
+    cursor: pointer;
+}
+button:hover {
+    filter: brightness(0.9);
+}
+button:active {
+    filter: brightness(0.8);
+}
+button:focus {
+    outline: none;
+}
+a {
+    text-decoration: none;
+    color: black;
+}
+a:hover {
+    text-decoration: underline;
+}
+a:focus {
+    outline: none;
+}
 </style>
