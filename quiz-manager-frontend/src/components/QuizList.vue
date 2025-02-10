@@ -32,14 +32,14 @@
                         <button
                             v-if="userRole === 'admin' || userRole === 'editor'"
                             @click="editQuiz(quiz.id)"
-                            class="bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600"
+                            class="edit-button"
                         >
                             Edit
                         </button>
                         <button
                             v-if="userRole === 'admin'"
                             @click="deleteQuiz(quiz.id)"
-                            class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
+                            class="delete-button"
                         >
                             Delete
                         </button>
@@ -118,7 +118,33 @@ tr:hover {
 }
 button {
     cursor: pointer;
+    width: 15%;
+    margin-bottom: 2%;
 }
+
+.edit-button {
+    background-color: #f0ad4e;
+    color: white;
+    border: none;
+    width: 30%;
+    margin-right: 2%;
+}
+
+.edit-button:hover {
+    background-color: #ed900e;
+}
+
+.delete-button {
+    background-color: #f0ad4e;
+    color: white;
+    border: none;
+    width: 30%;
+}
+
+.delete-button:hover {
+    background-color: red;
+}
+
 button:hover {
     filter: brightness(0.9);
 }

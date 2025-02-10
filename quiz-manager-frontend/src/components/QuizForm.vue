@@ -28,7 +28,7 @@
             </div>
 
             <button type="button" @click="addQuestion">Add Question</button>
-            <button type="submit">Create Quiz</button>
+            <button class="button-spacing" type="submit">Create Quiz</button>
         </form>
     </div>
 </template>
@@ -100,6 +100,10 @@ label {
     background-color: white
 }
 
+.button-spacing {
+    margin-left: 2%;
+}
+
 .form-group {
     display: flex;
     align-items: center;
@@ -125,6 +129,7 @@ label {
 }
 
 button {
+    width: 30%;
     margin-top: 10px;
     padding: 10px;
     background-color: orange;

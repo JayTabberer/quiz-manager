@@ -19,7 +19,7 @@
                 </div>
             </div>
 
-            <button type="submit" class="mt-4 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+            <button type="submit" class="get-results-button">
                 Get results
             </button>
 
@@ -106,6 +106,15 @@ export default {
 
     .form-margin {
         margin-bottom: 5%;
+    }
+
+    .get-results-button {
+        width: 30%;
+    }
+
+    .get-results-button:hover {
+        width: 30%;
+        background-color: rgb(39, 176, 39);
     }
 
     label {
