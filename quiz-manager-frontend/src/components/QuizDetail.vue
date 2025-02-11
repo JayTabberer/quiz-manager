@@ -23,8 +23,12 @@
           </div>
         </div>
   
-        <button type="submit" class="get-results-button">
-          Get results
+        <button 
+            type="submit" 
+            class="get-results-button"
+            :disabled="userRole === 'viewer'"
+            >
+            Get results
         </button>
 
       </form>
@@ -42,6 +46,7 @@
         selectedAnswers: {},
         score: null,
         totalQuestions: null,
+        userRole: null,
       };
     },
     mounted() {
@@ -50,10 +55,14 @@
     methods: {
       async getTheQuiz() {
         try {
-          const quizId = this.$route.params.id;
-          this.quiz = await getQuizById(quizId);
+            const user = JSON.parse(localStorage.getItem('user'));
+            if (user && user.role) {
+                this.userRole = user.role;
+            }
+            const quizId = this.$route.params.id;
+            this.quiz = await getQuizById(quizId);
         } catch (error) {
-          console.error('Error fetching quiz:', error);
+            console.error('Error fetching quiz:', error);
         }
       },
       async submitQuiz() {
@@ -76,6 +85,12 @@
   .quiz-title {
     text-align: center;
   }
+
+  .get-results-button:disabled {
+    background-color: gray;
+    cursor: not-allowed;
+    opacity: 0.6;
+    }
   
   /* Question Titles */
   .quiz-question-title {
